@@ -1,0 +1,224 @@
+package uaslp.objetos.list.LinkedList;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import uaslp.objetos.list.Iterator;
+
+public class LinkedListTest {
+
+    //Técnica TDD: Test Driven Development
+    //Maven coordinates (De la librería)
+    @Test
+    public void givenANewList_theSizeIsZero(){
+        //Inicializacion  ---  Given:
+        LinkedList<String> lista = new LinkedList<>();
+
+
+        //Ejecución --- When:
+        int size = lista.getSize();
+
+        //Validación --- Then:
+        Assertions.assertEquals(0, size);
+
+
+    }
+
+    @Test
+    public void givenANewList_whenAddAtTail_thenSizeIsOne(){
+        //Inicializacion  ---  Given:
+        LinkedList<String> lista = new LinkedList<>();
+
+
+        //Ejecución --- When:
+        lista.addAtTail("Uno");
+
+        //Validación --- Then:
+        Assertions.assertEquals(1, lista.getSize());
+        Assertions.assertEquals("Uno", lista.getAt(0));
+    }
+
+    @Test
+    public void givenANonEmptyList_whenAddAtTail_thenSizeIsIncreased(){
+        //Inicializacion  ---  Given:
+        LinkedList<String> lista = new LinkedList<>();
+        lista.addAtTail("Uno"); //No tiene que estar vacía, por eso ya no es parte de ejecución ahora es inicialización
+
+        //Ejecución --- When:
+        lista.addAtTail("Dos");
+
+        //Validación --- Then:
+        Assertions.assertEquals(2, lista.getSize());
+        Assertions.assertEquals("Uno", lista.getAt(0));
+        Assertions.assertEquals("Dos", lista.getAt(1));
+    }
+
+    @Test
+    public void givenANonEmptyList_whenAddAtFront_thenSizeIsIncreased(){
+        //Inicializacion  ---  Given:
+        LinkedList<String> lista = new LinkedList<>();
+
+        lista.addAtFront("Uno");
+
+        //Ejecución --- When:
+        lista.addAtFront("Dos");
+
+        //Validación --- Then:
+        Assertions.assertEquals(2, lista.getSize());
+        Assertions.assertEquals("Dos", lista.getAt(0));
+        Assertions.assertEquals("Uno", lista.getAt(1));
+    }
+
+    @Test
+    public void givenAList_whenRemoveLessThanZero_thenReturnFalse(){
+        //Inicializacion  ---  Given:
+        LinkedList<String> lista = new LinkedList<>();
+
+        lista.addAtFront("Uno");
+
+        //Ejecución --- When:
+        boolean result = lista.remove(-1);
+
+        //Validación --- Then:
+        Assertions.assertFalse(result);
+    }
+
+    @Test
+    public void givenAListWithOneElement_whenRemoveHead_thenReturnTrue(){
+        //Inicializacion  ---  Given:
+        LinkedList<String> lista = new LinkedList<>();
+
+        lista.addAtFront("Uno");
+
+        //Ejecución --- When:
+        boolean result = lista.remove(0);
+
+        //Validación --- Then:
+        Assertions.assertTrue(result);
+        Assertions.assertEquals(0, lista.getSize());
+    }
+
+    @Test
+    public void givenAListWithTwoElements_whenRemoveHead_thenReturnTrue(){
+        //Inicializacion  ---  Given:
+        LinkedList<String> lista = new LinkedList<>();
+
+        lista.addAtFront("Uno");
+        lista.addAtFront("Dos");
+
+        //Ejecución --- When:
+        boolean result = lista.remove(0);
+
+        //Validación --- Then:
+        Assertions.assertTrue(result);
+        Assertions.assertEquals(1, lista.getSize());
+        Assertions.assertEquals(lista.getAt(0), "Uno");
+    }
+
+    @Test
+    public void givenAListWithTwoElements_whenRemoveTail_thenReturnTrue()
+    {
+        LinkedList<String> lista = new LinkedList<>();
+
+        lista.addAtTail("Uno");
+        lista.addAtTail("Dos");
+
+        boolean result = lista.remove(1);
+
+        Assertions.assertTrue(result);
+        Assertions.assertEquals(1,lista.getSize());
+        Assertions.assertEquals(lista.getAt(0),"Uno");
+    }
+
+    @Test
+    public void givenAListWith3Elements_whenRemoveMiddle_thenReturnTrue(){
+        //Inicializacion  ---  Given:
+        LinkedList<String> lista = new LinkedList<>();
+
+        lista.addAtTail("Uno");
+        lista.addAtFront("Dos");
+        lista.addAtTail("Tres");
+        //Dos Uno Tres
+        //Ejecución --- When:
+        boolean result = lista.remove(1);
+        //Dos Tres
+        //Validación --- Then:
+        Assertions.assertTrue(result);
+        Assertions.assertEquals(2, lista.getSize());
+        Assertions.assertEquals(lista.getAt(0), "Dos");
+        Assertions.assertEquals(lista.getAt(1), "Tres");
+    }
+
+    @Test
+    public void givenAListWith3Elements_whenRemoveAll_thenSizeIsZero()
+    {
+        LinkedList<String> lista = new LinkedList<>();
+
+        lista.addAtTail("Uno");
+        lista.addAtFront("Dos");
+        lista.addAtTail("Tres");
+
+        lista.removeAll();
+
+        Assertions.assertEquals(0,lista.getSize());
+    }
+
+    @Test
+    public void givenAListWith3Elements_whenSetAt1_thenElementIsModified()
+    {
+        LinkedList<String> lista = new LinkedList<>();
+
+        lista.addAtTail("Uno");
+        lista.addAtFront("Dos");
+        lista.addAtTail("Tres");
+
+        lista.setAt(1,"Cuatro");
+
+        Assertions.assertEquals(3,lista.getSize());
+        Assertions.assertEquals("Dos",lista.getAt(0));
+        Assertions.assertEquals("Cuatro",lista.getAt(1));
+        Assertions.assertEquals("Tres",lista.getAt(2));
+
+    }
+
+    @Test
+    public void givenAListWith3Elements_whenSetLessThanZero_thenElementIsModified()
+    {
+        LinkedList<String> lista = new LinkedList<>();
+
+        lista.addAtTail("Uno");
+        lista.addAtFront("Dos");
+        lista.addAtTail("Tres");
+
+        boolean result = lista.setAt(-1,"Cuatro");
+
+        Assertions.assertEquals(3,lista.getSize());
+        Assertions.assertEquals("Dos",lista.getAt(0));
+        Assertions.assertEquals("Uno",lista.getAt(1));
+        Assertions.assertEquals("Tres",lista.getAt(2));
+        Assertions.assertFalse(result);
+    }
+
+    @Test
+    public void givenAListWithThreeElements_whenGetIterator_thenIteratorWorksOverThreeElements(){
+        LinkedList<String> list=new LinkedList<>();
+
+        list.addAtFront("Uno");
+        list.addAtTail("Dos");
+        list.addAtTail("Tres");
+
+        Iterator<String> iterator = list.getIterator();
+
+        int sizeOfList = list.getSize();
+
+        Assertions.assertEquals(3,sizeOfList);
+        Assertions.assertNotNull(iterator);
+        Assertions.assertTrue(iterator.hasNext());
+        Assertions.assertEquals("Uno",iterator.next());
+        Assertions.assertTrue(iterator.hasNext());
+        Assertions.assertEquals("Dos",iterator.next());
+        Assertions.assertTrue(iterator.hasNext());
+        Assertions.assertEquals("Tres",iterator.next());
+        Assertions.assertFalse(iterator.hasNext());
+    }
+}
+
